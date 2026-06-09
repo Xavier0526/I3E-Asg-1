@@ -2,15 +2,20 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public Transform respawnPoint;
 
-    // Update is called once per frame
-    void Update()
+    void OnTriggerEnter(Collider other)
     {
-        
+        PlayerRespawn player = other.GetComponentInParent<PlayerRespawn>();
+
+        if (player != null)
+        {
+            if (respawnPoint != null)
+                player.SetCheckpoint(respawnPoint.position);
+            else
+                player.SetCheckpoint(transform.position);
+
+            Debug.Log("New checkpoint touched: " + gameObject.name);
+        }
     }
 }
