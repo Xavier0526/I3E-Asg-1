@@ -61,6 +61,24 @@ public class PlayerInteract : MonoBehaviour
                 return;
             }
 
+            Coin coin = hit.collider.GetComponentInParent<Coin>();
+
+            if (coin != null)
+            {
+                cardPromptPanel.SetActive(true);
+
+                cardPromptText.text = "Press [E] to collect";
+                cardNameText.text = "Coin";
+
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    GetComponent<PlayerRespawn>().CollectCoin(coin.value);
+                    Destroy(coin.gameObject);
+                }
+
+                return;
+            }
+
             DoorScanner scanner = hit.collider.GetComponentInParent<DoorScanner>();
 
             if (scanner != null)

@@ -6,6 +6,8 @@ using System.Collections.Generic;
 
 public class PlayerRespawn : MonoBehaviour
 {
+    public int coinCount = 0;
+    public TextMeshProUGUI coinText;
     public Transform startPoint;
     public int maxHP = 5;
 
@@ -15,6 +17,11 @@ public class PlayerRespawn : MonoBehaviour
     public TextMeshProUGUI hpText;
     public Image deathEffectImage;
     public Slider deathZoneBar;
+
+    // Card Icons
+    public GameObject blueCardIcon;
+    public GameObject redCardIcon;
+    public GameObject yellowCardIcon;
 
     private int currentHP;
     private Vector3 startPosition;
@@ -30,27 +37,27 @@ public class PlayerRespawn : MonoBehaviour
         currentHP = maxHP;
         currentDeathZoneHP = maxDeathZoneHP;
 
-        if (startPoint != null)
-            startPosition = startPoint.position;
-        else
-            startPosition = transform.position;
-
+        startPosition = startPoint != null ? startPoint.position : transform.position;
         respawnPosition = startPosition;
 
         UpdateHPUI();
         UpdateDeathZoneBar();
+        UpdateCoinUI();
 
         if (deathZoneBar != null)
             deathZoneBar.gameObject.SetActive(true);
 
         if (deathEffectImage != null)
             deathEffectImage.color = new Color(1, 0, 0, 0);
+
+        if (blueCardIcon != null) blueCardIcon.SetActive(false);
+        if (redCardIcon != null) redCardIcon.SetActive(false);
+        if (yellowCardIcon != null) yellowCardIcon.SetActive(false);
     }
 
     public void SetCheckpoint(Vector3 checkpoint)
     {
         respawnPosition = checkpoint + Vector3.up * 1f;
-        Debug.Log("Checkpoint saved at: " + respawnPosition);
     }
 
     public void TakeDeathZoneDamage(float damage)
@@ -62,13 +69,10 @@ public class PlayerRespawn : MonoBehaviour
 
         UpdateDeathZoneBar();
 
-        Debug.Log("DeathZone HP: " + currentDeathZoneHP);
-
         if (currentDeathZoneHP <= 0)
         {
             currentDeathZoneHP = maxDeathZoneHP;
             UpdateDeathZoneBar();
-
             TakeDamage();
         }
     }
@@ -81,10 +85,7 @@ public class PlayerRespawn : MonoBehaviour
 
     public void HideDeathZoneBar()
     {
-        // Don't reset the bar when leaving the DeathZone.
-        // Just hide it so it keeps its previous value.
-
-        
+        // Do not reset damage.
     }
 
     public void TakeDamage()
@@ -103,8 +104,6 @@ public class PlayerRespawn : MonoBehaviour
             UpdateDeathZoneBar();
 
             Teleport(startPosition);
-
-            Debug.Log("0 HP. Respawned at start. HP reset to " + maxHP + ".");
         }
         else
         {
@@ -112,7 +111,6 @@ public class PlayerRespawn : MonoBehaviour
             UpdateDeathZoneBar();
 
             Teleport(respawnPosition);
-            Debug.Log("Damaged. Respawned at checkpoint.");
         }
     }
 
@@ -136,6 +134,12 @@ public class PlayerRespawn : MonoBehaviour
             deathZoneBar.maxValue = maxDeathZoneHP;
             deathZoneBar.value = currentDeathZoneHP;
         }
+    }
+
+    void UpdateCoinUI()
+    {
+        if (coinText != null)
+            coinText.text = "Coins: " + coinCount;
     }
 
     IEnumerator DeathEffect()
@@ -169,11 +173,31 @@ public class PlayerRespawn : MonoBehaviour
         if (!collectedCards.Contains(cardID))
         {
             collectedCards.Add(cardID);
+
+            if (cardID == "BlueCard" && blueCardIcon != null)
+                blueCardIcon.SetActive(true);
+
+            if (cardID == "RedCard" && redCardIcon != null)
+                redCardIcon.SetActive(true);
+
+            if (cardID == "YellowCard" && yellowCardIcon != null)
+                yellowCardIcon.SetActive(true);
+
             Debug.Log("Collected card: " + cardID);
         }
     }
+
     public bool HasCard(string cardID)
     {
         return collectedCards.Contains(cardID);
+    }
+
+    public void CollectCoin(int amount)
+    {
+        coinCount += amount;
+
+        UpdateCoinUI();
+
+        Debug.Log("Coins: " + coinCount);
     }
 }
