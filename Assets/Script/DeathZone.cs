@@ -2,23 +2,35 @@ using UnityEngine;
 
 public class DeathZone : MonoBehaviour
 {
-    private bool hasDamaged = false;
+    public float damagePerSecond = 25f;
 
     void OnTriggerEnter(Collider other)
     {
-        if (hasDamaged) return;
-
         PlayerRespawn player = other.GetComponentInParent<PlayerRespawn>();
 
         if (player != null)
         {
-            hasDamaged = true;
-            player.TakeDamage();
+            player.ShowDeathZoneBar();
+        }
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        PlayerRespawn player = other.GetComponentInParent<PlayerRespawn>();
+
+        if (player != null)
+        {
+            player.TakeDeathZoneDamage(damagePerSecond * Time.deltaTime);
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        hasDamaged = false;
+        PlayerRespawn player = other.GetComponentInParent<PlayerRespawn>();
+
+        if (player != null)
+        {
+            player.HideDeathZoneBar();
+        }
     }
 }
