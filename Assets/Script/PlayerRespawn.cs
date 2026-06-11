@@ -8,6 +8,7 @@ public class PlayerRespawn : MonoBehaviour
 {
     public int coinCount = 0;
     public TextMeshProUGUI coinText;
+
     public Transform startPoint;
     public int maxHP = 5;
 
@@ -18,7 +19,13 @@ public class PlayerRespawn : MonoBehaviour
     public Image deathEffectImage;
     public Slider deathZoneBar;
 
-    // Card Icons
+    public GameObject gameOverPanel;
+    public float gameOverDuration = 2f;
+
+    public AudioSource audioSource;
+    public AudioClip coinCollectSound;
+    public AudioClip cardCollectSound;
+
     public GameObject blueCardIcon;
     public GameObject redCardIcon;
     public GameObject yellowCardIcon;
@@ -34,6 +41,9 @@ public class PlayerRespawn : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
 
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
+
         currentHP = maxHP;
         currentDeathZoneHP = maxDeathZoneHP;
 
@@ -43,6 +53,9 @@ public class PlayerRespawn : MonoBehaviour
         UpdateHPUI();
         UpdateDeathZoneBar();
         UpdateCoinUI();
+
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(false);
 
         if (deathZoneBar != null)
             deathZoneBar.gameObject.SetActive(true);
@@ -73,6 +86,7 @@ public class PlayerRespawn : MonoBehaviour
         {
             currentDeathZoneHP = maxDeathZoneHP;
             UpdateDeathZoneBar();
+
             TakeDamage();
         }
     }
@@ -85,7 +99,7 @@ public class PlayerRespawn : MonoBehaviour
 
     public void HideDeathZoneBar()
     {
-        // Do not reset damage.
+        // Do not reset DeathZone HP.
     }
 
     public void TakeDamage()
@@ -97,13 +111,7 @@ public class PlayerRespawn : MonoBehaviour
 
         if (currentHP <= 0)
         {
-            currentHP = maxHP;
-            UpdateHPUI();
-
-            currentDeathZoneHP = maxDeathZoneHP;
-            UpdateDeathZoneBar();
-
-            Teleport(startPosition);
+            StartCoroutine(GameOverRoutine());
         }
         else
         {
@@ -112,6 +120,25 @@ public class PlayerRespawn : MonoBehaviour
 
             Teleport(respawnPosition);
         }
+    }
+
+    IEnumerator GameOverRoutine()
+    {
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(true);
+
+        yield return new WaitForSeconds(gameOverDuration);
+
+        currentHP = maxHP;
+        UpdateHPUI();
+
+        currentDeathZoneHP = maxDeathZoneHP;
+        UpdateDeathZoneBar();
+
+        Teleport(startPosition);
+
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(false);
     }
 
     void Teleport(Vector3 position)
@@ -174,6 +201,9 @@ public class PlayerRespawn : MonoBehaviour
         {
             collectedCards.Add(cardID);
 
+            if (audioSource != null && cardCollectSound != null)
+                audioSource.PlayOneShot(cardCollectSound);
+
             if (cardID == "BlueCard" && blueCardIcon != null)
                 blueCardIcon.SetActive(true);
 
@@ -195,8 +225,10 @@ public class PlayerRespawn : MonoBehaviour
     public void CollectCoin(int amount)
     {
         coinCount += amount;
-
         UpdateCoinUI();
+
+        if (audioSource != null && coinCollectSound != null)
+            audioSource.PlayOneShot(coinCollectSound);
 
         Debug.Log("Coins: " + coinCount);
     }

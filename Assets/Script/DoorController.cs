@@ -7,6 +7,7 @@ public class DoorController : MonoBehaviour
 
     private Quaternion closedRotation;
     private Quaternion openRotation;
+
     private bool isOpen = false;
 
     void Start()
@@ -30,6 +31,14 @@ public class DoorController : MonoBehaviour
                 Time.deltaTime * openSpeed
             );
         }
+        else
+        {
+            transform.rotation = Quaternion.Lerp(
+                transform.rotation,
+                closedRotation,
+                Time.deltaTime * openSpeed
+            );
+        }
     }
 
     public void OpenDoor()
@@ -37,4 +46,11 @@ public class DoorController : MonoBehaviour
         Debug.Log("Door opening");
         isOpen = true;
     }
+
+    public void CloseDoor()
+    {
+        Debug.Log("Door closing");
+        isOpen = false;
+    }
 }
+

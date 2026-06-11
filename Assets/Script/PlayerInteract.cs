@@ -63,7 +63,7 @@ public class PlayerInteract : MonoBehaviour
 
             Coin coin = hit.collider.GetComponentInParent<Coin>();
 
-            if (coin != null)
+            if (coin != null && !showingMessage)
             {
                 cardPromptPanel.SetActive(true);
 
@@ -74,6 +74,46 @@ public class PlayerInteract : MonoBehaviour
                 {
                     GetComponent<PlayerRespawn>().CollectCoin(coin.value);
                     Destroy(coin.gameObject);
+                }
+
+                return;
+            }
+
+            FinalDoorScanner finalScanner = hit.collider.GetComponentInParent<FinalDoorScanner>();
+
+            if (finalScanner != null)
+            {
+                PlayerRespawn player = GetComponent<PlayerRespawn>();
+
+                scannerPromptPanel.SetActive(true);
+
+                if (!showingMessage)
+                {
+                    scannerPromptText.text = "Press [E] to open final door";
+                    scannerStatusText.text = "Required: All cards + " + finalScanner.requiredCoins + " coins";
+                }
+
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    if (finalScanner.CanOpenFinalDoor(player))
+                    {
+                        scannerPromptText.text = "";
+                        scannerStatusText.text = "FINAL DOOR OPENED";
+
+                        showingMessage = true;
+                        messageTimer = 2f;
+
+                        finalScanner.TryOpenFinalDoor(player);
+                    }
+                    else
+                    {
+                        scannerPromptText.text = "";
+                        scannerStatusText.text =
+                            "ACCESS DENIED\nNeed all cards and " + finalScanner.requiredCoins + " coins";
+
+                        showingMessage = true;
+                        messageTimer = 2f;
+                    }
                 }
 
                 return;
