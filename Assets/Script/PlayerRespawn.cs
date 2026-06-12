@@ -21,6 +21,8 @@ public class PlayerRespawn : MonoBehaviour
 
     public GameObject gameOverPanel;
     public float gameOverDuration = 2f;
+    public GameObject finishPanel;
+    public TextMeshProUGUI finishStatsText;
 
     public AudioSource audioSource;
     public AudioClip coinCollectSound;
@@ -56,6 +58,9 @@ public class PlayerRespawn : MonoBehaviour
 
         if (gameOverPanel != null)
             gameOverPanel.SetActive(false);
+            
+        if (finishPanel != null)
+            finishPanel.SetActive(false);
 
         if (deathZoneBar != null)
             deathZoneBar.gameObject.SetActive(true);
@@ -231,5 +236,22 @@ public class PlayerRespawn : MonoBehaviour
             audioSource.PlayOneShot(coinCollectSound);
 
         Debug.Log("Coins: " + coinCount);
+    }
+
+    public void ShowFinishUI()
+    {
+        if (finishPanel != null)
+            finishPanel.SetActive(true);
+
+        if (finishStatsText != null)
+        {
+            finishStatsText.text =
+            "GAME COMPLETED\n\n" +
+            "Coins Collected : " + coinCount + "\n" +
+            "Cards Collected : " + collectedCards.Count + "/3\n" +
+            "HP Remaining : " + currentHP;
+        }
+
+        Time.timeScale = 0f;
     }
 }
