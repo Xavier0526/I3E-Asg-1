@@ -1,4 +1,4 @@
-# I3E Asg 1
+# I3E_Asg1_XavierOng_ReadMe
 
 ## 1. Gamee Description
 This game is a first-person game where player must navigate through to collect cards and coins while avoiding hazardous areas, unlocking doors and escaping through the final exit
