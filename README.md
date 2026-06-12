@@ -100,16 +100,16 @@ Software Used
 - ChatGPT (code assistance and debugging)
 
 ## 10. Puzzle Answer Key
-###Blue Door
+### Blue Door
 Required: Blue Access Card
 
-###Red Door
+### Red Door
 Required: Red Access Card
 
-###Yellow Door
+### Yellow Door
 Required: Yellow Access Card
 
-###Final Door
+### Final Door
 Required:
 - Blue Access Card
 - Red Access Card
