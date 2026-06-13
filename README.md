@@ -1,6 +1,6 @@
 # I3E_Asg1_XavierOng_ReadMe
 
-## 1. Gamee Description
+## 1. Game Description
 This game is a first-person game where player must navigate through to collect cards and coins while avoiding hazardous areas, unlocking doors and escaping through the final exit
 
 ## 2. How to run the game
