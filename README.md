@@ -71,6 +71,11 @@ Recommended:
 - Dedicated GPU
 - 2 GB free storage
 
+Used in Gameplay Video
+- Intel Core i9
+- 32 GB RAM
+- Nvidia GeForce RTX 4060
+
 ## 7. Unity Version
 Developed Using: Unity 6000.3.13f1
 
@@ -84,20 +89,23 @@ Developed Using: Unity 6000.3.13f1
 ## 9. References and Credits
 Models
 - Unity Asset Store
+ - Coin: https://assetstore.unity.com/packages/3d/props/gold-coins-1810
+ - Card: https://assetstore.unity.com/packages/3d/props/retro-psx-horror-puzzle-item-pack-icon-lowpoly-250188
+ - Scanner: https://assetstore.unity.com/packages/3d/environments/sci-fi/sci-fi-access-machine-162924
 - Probuilder
 
 Textures & Materials
 - Custom Materials
 
 Audio 
-- Unity Asset Store
+- Unity Asset Store: https://assetstore.unity.com/packages/audio/sound-fx/collectables-sound-effects-pack-290553
 - Background Music: AI-generated: https://suno.com/s/3dIvmq69qJFyhmvB
 
 Software Used
 - Unity 6
 - Visual Studio Code
 - Suno (Background Music)
-- ChatGPT (code assistance and debugging)
+- ChatGPT (code assistance and debugging, ray casting and Quaternion.Lerp)
 
 ## 10. Puzzle Answer Key
 ### Blue Door
