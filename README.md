@@ -11,10 +11,15 @@ This game is a first-person game where player must navigate through to collect c
 ## 3. Controls
 ### Key   |  Action
 - W      | Move Forward
+  
 - A      | Move Left
+  
 - S      | Move Backward
+  
 - D      | Move Right
+  
 - Mouse  | Look Around
+  
 - E      | Interact / Collect / Scan Card
 
 ## 4. Game Objective
